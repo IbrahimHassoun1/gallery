@@ -10,8 +10,10 @@
     
 }
 
-.image-card:hover
- .image-card-content{
+.image-card-content {
+    display: none;
+}
+.image-card:hover .image-card-content{
     position: absolute;
     display: flex;
     flex-direction: column;

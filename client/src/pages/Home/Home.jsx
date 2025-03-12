@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Hero from '../components/Hero/Hero.jsx'
-import Gallery from '../components/Gallery/Gallery.jsx'
+import Hero from '../../components/Hero/Hero.jsx'
+import Gallery from '../../components/Gallery/Gallery.jsx'
 
 const Home = () => {
   return (

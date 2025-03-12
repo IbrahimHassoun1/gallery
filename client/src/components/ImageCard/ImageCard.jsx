@@ -1,6 +1,6 @@
 import React from 'react'
 import './ImageCard.css'
-const ImageCard = ({src}) => {
+const ImageCard = ({id,src,title,description}) => {
   return (
     <div>
         <div className="image-card">
@@ -8,8 +8,8 @@ const ImageCard = ({src}) => {
             <div className="image-card-content">
                 
                 <div className='info'>
-                    <h3>Image Title</h3>
-                    <p>Image Description</p>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
                 </div>
                 <div className='buttons'>
                     <button className='delete-button'>Delete</button>
