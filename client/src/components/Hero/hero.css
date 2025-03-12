@@ -1,0 +1,18 @@
+.hero{
+background-image: url("../../assets/pexels-andre-furtado-43594-1264210_11zon.jpg");
+background-position:calc(50% - 0px) calc(30% - 0px);
+background-size: cover;
+min-height: 70vh;
+position: relative;
+
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+   
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)); 
+    z-index: 1;
+}
