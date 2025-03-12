@@ -9,6 +9,7 @@ class Image_Skeleton
     private $owner_id;
     private $created_at;
 
+    private $image;
     public function __construct()
     {
 
@@ -71,6 +72,16 @@ class Image_Skeleton
     public function setCreatedAt($created_at)
     {
         $this->created_at = $created_at;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
     }
 }
 

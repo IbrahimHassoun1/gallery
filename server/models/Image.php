@@ -21,23 +21,63 @@ class Image extends Image_Skeleton
     public function create()
     {
         self::connectDatabase();
-        if ($this->conn == null) {
-            die("Connection failed: " . $this->conn->connect_error);
+        if (self::$conn == null) {
+            die("Connection failed: " . self::$conn->connect_error);
         }
 
-        $sql = "INSERT INTO images (title, description, path, owner_id) VALUES (?, ?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
-        $title = $this->getTitle();
-        $description = $this->getDescription();
-        $path = $this->getPath();
-        $owner_id = $this->getOwnerId();
-        $stmt->bind_param("sssi", $title, $description, $path, $owner_id);
-        if ($stmt->execute()) {
-            return true;
+        $imageTmpPath = $this->getImage();
+
+        if (!empty($imageTmpPath)) {
+            $targetDir = __DIR__ . "/../assets/";
+
+            // Generate unique filename
+            $uniqueName = uniqid() . "_" . basename($this->getPath());
+            $targetFile = $targetDir . $uniqueName;
+
+            // Make sure directory exists
+            if (!is_dir($targetDir)) {
+                mkdir($targetDir, 0777, true);
+            }
+
+            // Move the file to the target directory
+            if (move_uploaded_file($imageTmpPath, $targetFile)) {
+                $this->setPath($uniqueName);
+            } else {
+                echo json_encode(["message" => "Failed to upload image"]);
+                http_response_code(500);
+                return false;
+            }
+
+            // Insert into database
+            $sql = "INSERT INTO images (title, description, path, owner_id) VALUES (?, ?, ?, ?)";
+            $stmt = self::$conn->prepare($sql);
+            if (!$stmt) {
+                echo json_encode(["message" => "SQL error: " . $this->conn->error]);
+                http_response_code(500);
+                return false;
+            }
+
+            $title = $this->getTitle();
+            $description = $this->getDescription();
+            $path = $this->getPath();
+            $owner_id = $this->getOwnerId();
+
+            $stmt->bind_param("sssi", $title, $description, $path, $owner_id);
+
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                echo json_encode(["message" => "Database insert failed"]);
+                http_response_code(500);
+                return false;
+            }
         } else {
+            echo json_encode(["message" => "No image uploaded"]);
+            http_response_code(400);
             return false;
         }
     }
+
     public function read()
     {
         self::connectDatabase();
