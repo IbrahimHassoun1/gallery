@@ -99,17 +99,19 @@ class Image extends Image_Skeleton
     public function update()
     {
         self::connectDatabase();
-        if ($this->conn == null) {
-            die("Connection failed: " . $this->conn->connect_error);
+        if (self::$conn == null) {
+            die("Connection failed: " . self::$conn->connect_error);
         }
-        $sql = "UPDATE images SET title = ?, description = ?, path = ?, owner_id = ? WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
+
+
+        $sql = "UPDATE images SET title = ?, description = ? WHERE id = ?";
+        $stmt = self::$conn->prepare($sql);
         $title = $this->getTitle();
         $description = $this->getDescription();
-        $path = $this->getPath();
-        $owner_id = $this->getOwnerId();
+
+
         $id = $this->getId();
-        $stmt->bind_param("sssii", $title, $description, $path, $owner_id, $id);
+        $stmt->bind_param("ssi", $title, $description, $id);
         if ($stmt->execute()) {
             return true;
         } else {
