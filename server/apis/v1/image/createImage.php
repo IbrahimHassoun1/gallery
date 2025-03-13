@@ -3,20 +3,19 @@ header("Content-Type: application/json");
 require_once(__DIR__ . '/../../../models/Image.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_FILES["image"])) {
+    $data = json_decode(file_get_contents("php://input"), true);
+    if (isset($data["image"])) {
         $image = new Image();
-        $image->setImage($_FILES["image"]["tmp_name"]);
-        $image->setTitle($_POST['title']);
-        $image->setDescription($_POST['description']);
-        $image->setPath($_FILES["image"]["name"]);
-        $image->setOwnerId($_POST['owner_id']);
-        if ($image->create()) {
-            echo json_encode(["message" => "Image uploaded successfully"]);
-            http_response_code(201);
-        }
+        $image->setImage($data["image"]);
+        $image->setTitle($data["title"]);
+        $image->setDescription($data["description"]);
+        $image->setOwnerId($data["owner_id"]);
+        $image->create();
+
     } else {
         echo json_encode(["message" => "No image uploaded"]);
         http_response_code(400);
+        exit();
     }
 } else {
     echo json_encode(["message" => "Method not allowed"]);
