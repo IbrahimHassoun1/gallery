@@ -1,22 +1,22 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import axios from 'axios'
 import { MyContext } from '../../Context/Context'
 import { useNavigate } from 'react-router'
 
 const Signup = () => {
-    const {url,setRegistered ,setToken} =   useContext(MyContext)
+    const {url,setRegistered ,setToken,test} =   useContext(MyContext)
     const navigate = useNavigate()
-
+    useEffect(() => {console.log(test)}, [test])
 
     const handleRegister = async (e) => {
         e.preventDefault()
         const formData = new FormData(e.target)
         const data = Object.fromEntries(formData.entries())
-        console.log(data)
+        
     
         try{
           const response=await axios.post(url+"/user/register.php",data,{headers:{'Content-Type':'application/json'}})
-          console.log(response.data.token)
+          
           if (response.data.token !=null){
             localStorage.setItem('token',response.data.token)
             setToken(response.data.token)

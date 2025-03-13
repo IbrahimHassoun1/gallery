@@ -1,5 +1,9 @@
+.parent{
+    position: relative;
+}
 .gallery{
     text-align: center;
+    position: relative;
 }
 hr{
     width: 50%;

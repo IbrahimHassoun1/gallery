@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import './Gallery.css'
 import ImageCard from '../ImageCard/ImageCard'
+import AddImage from '../AddImage/AddImage'
+import { MyContext } from '../../Context/Context'
 const Gallery = () => {
+  const {addPopup, setAddPopup}=useContext(MyContext)
   return (
+    <div className='parent'>
+      {addPopup?<AddImage/>:""}
     <div className='container gallery'>
+        
         <h1>Photos</h1>
         <hr />
         <div className="table">
@@ -13,7 +19,11 @@ const Gallery = () => {
             <ImageCard title="title 2" description="desc 2" src="https://images.unsplash.com/photo-1557683316-973673baf926?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"/>
             
           </div>
+
+          <button addPopup={addPopup} setAddPopup={setAddPopup} onClick={()=>setAddPopup(true)}>Add Image</button>
     </div>
+    </div>
+    
   )
 }
 
