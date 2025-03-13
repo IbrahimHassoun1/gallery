@@ -1,5 +1,18 @@
 .image-card{
     position: relative;
+    width: 30%;
+}
+@media (max-width: 1045px){
+    .image-card{
+        width: 45%;
+    }
+    
+}
+@media (max-width: 768px){
+    .image-card{
+        width: 100%;
+    }
+    
 }
 .image-card img{
     width: 100%;
@@ -11,22 +24,28 @@
 }
 
 .image-card-content {
-    display: none;
-}
-.image-card:hover .image-card-content{
     position: absolute;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
     display: flex;
     flex-direction: column;
-    
     color: var(--secondary-color);
     top: 0;
     background-color: black;
-    height: 99%;
+    height: 50vh;
     border-radius: 1rem;
     width: 100%;
+    transition: opacity 0.5s ease-in-out;
+    animation: fadeIn 1s forwards;
+    cursor: pointer ;
+}
+.image-card:hover .image-card-content{
+    
+    
+    
+   
     opacity: 0.9;
-    transition: all 0.5s;
-    animation: fadeInOut 1s forwards;
+    
 }
 .image-card .exit-button{
     margin-left: auto;
@@ -64,7 +83,7 @@
 }
 .image-card .buttons .delete-button{
     background-color: transparent;
-    border: 1px solid var(--primary-color);
+    border: 1px solid red;
 }
 .image-card .buttons .delete-button:hover{
     background-color: red;

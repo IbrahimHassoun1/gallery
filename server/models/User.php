@@ -54,6 +54,7 @@ class User extends User_Skeleton
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
+            $id = $row['id'];
             if (password_verify($password, $row['password'])) {
                 require_once(__DIR__ . '/../JWT/JWT.php');
 
@@ -69,7 +70,7 @@ class User extends User_Skeleton
 
                 $jwt = JWT::encode($payload, $key, 'HS256');
 
-                echo json_encode(array("message" => "Login successful", "token" => $jwt));
+                echo json_encode(array("message" => "Login successful", "token" => $jwt, "id" => $id));
                 http_response_code(200);
             } else {
                 echo json_encode(array("message" => "Invalid password"));
