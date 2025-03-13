@@ -5,16 +5,19 @@ import './login.css'
 const Login = () => {
   const url='http://localhost/gallery/server/apis/v1'
   const [registered,setRegistered] = useState(false)
-
+  const [token,setToken] =useState(null)
   const handleRegister = async (e) => {
     e.preventDefault()
     const formData = new FormData(e.target)
     const data = Object.fromEntries(formData.entries())
     console.log(data)
-
+    
     try{
       const response=await axios.post(url+"/user/register.php",data,{headers:{'Content-Type':'application/json'}})
       console.log(response)
+      localStorage.setItem("token",response.data.token)
+      window.location.pathname="/"
+      setToken(response.data.token)
     }catch(error){
       console.log(error)
     }
@@ -30,6 +33,9 @@ const Login = () => {
     try{
       const response=await axios.post(url+"/user/login.php",data,{headers:{'Content-Type':'application/json'}})
       console.log(response)
+      localStorage.setItem("token",response.data.token)
+      window.location.pathname="/"
+      setToken(response.data.token)
     }catch(error){
       console.log(error)
     }

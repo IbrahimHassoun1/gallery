@@ -10,6 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user->setEmail($data['email']);
     $user->setPassword($data['password']);
     $user->login();
+
 }
 
 ?>
