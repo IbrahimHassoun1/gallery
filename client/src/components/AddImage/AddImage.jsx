@@ -1,21 +1,23 @@
-import React, { use, useContext, useState, useEffect } from 'react'
+import React, {  useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import "./AddImage.css"
 import { MyContext } from '../../Context/Context'
 const AddImage = () => {
 
-    const {addPopup, setAddPopup,url}=useContext(MyContext)
-    const {image,setImage} = useState(null)
-   
+    const { setAddPopup,url,id}=useContext(MyContext)
+    const [image, setImage] = useState(null)
+    
     const [data,setData] = useState({
         title:"",
         description:"",
         image:""
     })
 
+   
     const handleChange = (e) =>{
         setData(
             {
+                id:id,
                 ...data,
                 [e.target.name]:e.target.value
             }
@@ -26,24 +28,28 @@ const AddImage = () => {
         if(!image)return;
 
         const reader = new FileReader()
-        reader.onload = () => {
-            console.log(reader.result); // This is your Base64 string
-        };
+        
     
         reader.onerror = (error) => {
             console.error("Error reading file:", error);
         };
     
         ;
-        setImage(reader.readAsDataURL(image))
+        reader.readAsDataURL(image);
+        reader.onloadend = () => {
+            setImage(reader.result);
+        };
 
     }
     const addImage = async (e) =>{
         e.preventDefault()
         const apiData = {
+            owner_id:id,
             ...data,
-            image:image
+            image
         }
+        console.log(image)
+        
         const response = await axios.post(url+"/image/createImage.php", apiData, {
             headers: { 'Content-Type': 'application/json' }
         });

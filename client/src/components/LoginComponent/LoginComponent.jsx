@@ -4,7 +4,7 @@ import { MyContext } from '../../Context/Context'
 import { useNavigate } from 'react-router'
 
 const LoginComponent = () => {
-    const {url,setRegistered,setToken} =   useContext(MyContext)
+    const {url,setRegistered,setToken,setId} =   useContext(MyContext)
     //this will navigate without refreshing
     const navigate = useNavigate();
 
@@ -20,6 +20,7 @@ const LoginComponent = () => {
           if (response.data.token !=null){
             localStorage.setItem('token',response.data.token)
             setToken(response.data.token)
+            setId(response.data.id)
             navigate("/")
           }
         }catch(error){

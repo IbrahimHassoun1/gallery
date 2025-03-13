@@ -4,7 +4,7 @@ import { MyContext } from '../../Context/Context'
 import { useNavigate } from 'react-router'
 
 const Signup = () => {
-    const {url,setRegistered ,setToken,test} =   useContext(MyContext)
+    const {url,setRegistered ,setToken,test,setId} =   useContext(MyContext)
     const navigate = useNavigate()
     useEffect(() => {console.log(test)}, [test])
 
@@ -20,6 +20,7 @@ const Signup = () => {
           if (response.data.token !=null){
             localStorage.setItem('token',response.data.token)
             setToken(response.data.token)
+            setId(response.data.id)
             navigate("/")
           }
         }catch(error){

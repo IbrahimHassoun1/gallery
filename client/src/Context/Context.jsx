@@ -6,6 +6,7 @@ const ContextProvider = ({children}) =>{
     const url='http://localhost/gallery/server/apis/v1'
     const [registered,setRegistered] = useState(false)
     const [token,setToken] = useState(null)
+    const [id,setId]= useState(null)
     const [addPopup, setAddPopup] = useState(false)
     const test="test"
     const value={
@@ -13,6 +14,7 @@ const ContextProvider = ({children}) =>{
         registered,setRegistered,
         addPopup, setAddPopup,
         token,setToken,
+        id,setId,
         test
     }
     
