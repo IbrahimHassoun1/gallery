@@ -12,3 +12,7 @@
   margin-right: auto;
   max-width: 90%;
 }
+body{
+  overflow-x: hidden;
+  width: 100%;
+}

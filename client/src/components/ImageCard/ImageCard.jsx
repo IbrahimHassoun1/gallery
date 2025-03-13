@@ -2,7 +2,7 @@ import React from 'react'
 import './ImageCard.css'
 const ImageCard = ({id,src,title,description}) => {
   return (
-    <div>
+    
         <div className="image-card">
             <img src={src} alt="image" />
             <div className="image-card-content">
@@ -17,7 +17,7 @@ const ImageCard = ({id,src,title,description}) => {
                 </div>
             </div>
         </div>
-    </div>
+
   )
 }
 
