@@ -1,9 +1,13 @@
 import React,{useContext} from 'react'
 import axios from 'axios'
 import { MyContext } from '../../Context/Context'
+import { useNavigate } from 'react-router'
 
 const LoginComponent = () => {
-    const {url,setRegistered} =   useContext(MyContext)
+    const {url,setRegistered,setToken} =   useContext(MyContext)
+    //this will navigate without refreshing
+    const navigate = useNavigate();
+
     const handleLogin = async (e) => {
         e.preventDefault()
         const formData = new FormData(e.target)
@@ -12,7 +16,12 @@ const LoginComponent = () => {
     
         try{
           const response=await axios.post(url+"/user/login.php",data,{headers:{'Content-Type':'application/json'}})
-          console.log(response)
+          console.log(response.data.token)
+          if (response.data.token !=null){
+            localStorage.setItem('token',response.data.token)
+            setToken(response.data.token)
+            navigate("/")
+          }
         }catch(error){
           console.log(error)
         }

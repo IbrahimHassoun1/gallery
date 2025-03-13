@@ -7,12 +7,12 @@ import Signup from '../../components/Signup/Signup.jsx'
 import { MyContext } from '../../Context/Context.jsx'
 
 const Login = () => {
- const {registered} = useContext(MyContext)
-
- 
+  const {registered} = useContext(MyContext)
 
 
-  
+
+
+
 
 
   return (
