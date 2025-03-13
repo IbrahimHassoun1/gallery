@@ -1,4 +1,5 @@
 <?php
+use \Firebase\JWT\JWT;
 require_once(__DIR__ . "/User.Skeleton.php");
 class User extends User_Skeleton
 {
@@ -33,8 +34,10 @@ class User extends User_Skeleton
         $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')";
         $result = $conn->query($sql);
         if ($result) {
-            echo json_encode(array("message" => "User created successfully"));
+
+
             http_response_code(201);
+            $this->login();
         } else {
             echo json_encode(array("message" => "User not created"));
             http_response_code(400);
@@ -52,7 +55,21 @@ class User extends User_Skeleton
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             if (password_verify($password, $row['password'])) {
-                echo json_encode(array("message" => "Login successful"));
+                require_once(__DIR__ . '/../JWT/JWT.php');
+
+                $key = "Example";
+                $payload = array(
+                    "exp" => time() + (60 * 60),
+                    "data" => array(
+                        "id" => $row['id'],
+                        "name" => $row['name'],
+                        "email" => $row['email']
+                    )
+                );
+
+                $jwt = JWT::encode($payload, $key, 'HS256');
+
+                echo json_encode(array("message" => "Login successful", "token" => $jwt));
                 http_response_code(200);
             } else {
                 echo json_encode(array("message" => "Invalid password"));
