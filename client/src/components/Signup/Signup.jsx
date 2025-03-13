@@ -19,6 +19,7 @@ const Signup = () => {
           
           if (response.data.token !=null){
             localStorage.setItem('token',response.data.token)
+            localStorage.setItem("id",response.data.id)
             setToken(response.data.token)
             setId(response.data.id)
             navigate("/")

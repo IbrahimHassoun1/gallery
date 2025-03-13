@@ -8,13 +8,13 @@ import axios from 'axios'
 
 
 const Gallery = () => {
-  const {addPopup, setAddPopup,id,url}=useContext(MyContext)
-  const [images,setImages] = useState([])
+  const {addPopup, setAddPopup,id,url,images,setImages}=useContext(MyContext)
+  
 
 
   const getAllImages = async ()=>{
     try{
-      const response = await axios.post(url+"/image/readAllImages.php" ,{"owner_id":id},{
+      const response = await axios.post(url+"/image/readAllImages.php" ,{"owner_id":localStorage.getItem("id")},{
           headers: { 'Content-Type': 'application/json' }
       });
       console.log(response);
@@ -27,9 +27,11 @@ const Gallery = () => {
 
 
   useEffect(()=>{
-    getAllImages()
+    localStorage.getItem("id")!=null?
+    getAllImages():""
   },[id])
 
+ 
 
   return (
     <div className='parent'>
@@ -41,13 +43,13 @@ const Gallery = () => {
         <div className="table">
           {id!=null?
           images.map(element=>{
-            return <ImageCard src={element.path} title={element.path} description={element.description} key={element.id}/>
+            return <ImageCard src={element.base64} title={element.title} description={element.description} key={element.id}/>
           })
-          :"Login to access images"}
-      
+          :<h1>Login to access images</h1>}
+        
           </div>
-
-          <button addPopup={addPopup} setAddPopup={setAddPopup} onClick={()=>setAddPopup(true)}>Add Image</button>
+          {id!=null? <button addPopup={addPopup} setAddPopup={setAddPopup} onClick={()=>setAddPopup(true)}>Add Image</button>:""}
+         
     </div>
     </div>
     

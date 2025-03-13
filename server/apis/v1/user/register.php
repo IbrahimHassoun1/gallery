@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $data = json_decode(file_get_contents("php://input"), true);
     $user = new User();
+
     $user->setName($data['name']);
     $user->setEmail($data['email']);
     $user->setPassword($data['password']);

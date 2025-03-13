@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './ImageCard.css'
 const ImageCard = ({id,src,title,description}) => {
+    
   return (
     
         <div className="image-card">
-            <img src={'../../../../server/assets/'+src} alt="image" />
+            <img  src={src} alt="image" />
             <div className="image-card-content">
                 
                 <div className='info'>
