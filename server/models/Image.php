@@ -163,12 +163,32 @@ class Image extends Image_Skeleton
     {
         self::connectDatabase();
         if (self::$conn == null) {
-            die("Connection failed: " . $this->conn->connect_error);
+            die("Connection failed: " . self::$conn->connect_error);
         }
-        $sql = "SELECT * FROM images";
-        $result = self::$conn->query($sql);
+        $owner_id = $this->getOwnerId();
+        if ($owner_id == null) {
+            http_response_code(400);
+            echo json_encode(["message" => "send the owner id"]);
+            exit;
+        }
+        $sql = "SELECT * FROM images WHERE owner_id = ?";
+        $stmt = self::$conn->prepare($sql);
+        $stmt->bind_param("i", $owner_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
         if ($result->num_rows > 0) {
-            echo json_encode(["data" => $result->fetch_all(MYSQLI_ASSOC), "message" => "Records fetched successfully"]);
+            $images = $result->fetch_all(MYSQLI_ASSOC);
+            foreach ($images as &$image) {
+                $imagePath = __DIR__ . "/../assets/" . $image['path'];
+                if (file_exists($imagePath)) {
+                    $imageData = file_get_contents($imagePath);
+                    $imageBase64 = 'data:image/' . pathinfo($imagePath, PATHINFO_EXTENSION) . ';base64,' . base64_encode($imageData);
+                    $image['base64'] = $imageBase64;
+                } else {
+                    $image['base64'] = null;
+                }
+            }
+            echo json_encode(["data" => $images, "message" => "Records fetched successfully"]);
             http_response_code(200);
         } else {
             echo json_encode(["message" => "No records found"]);

@@ -4,7 +4,7 @@ const ImageCard = ({id,src,title,description}) => {
   return (
     
         <div className="image-card">
-            <img src={src} alt="image" />
+            <img src={'../../../../server/assets/'+src} alt="image" />
             <div className="image-card-content">
                 
                 <div className='info'>

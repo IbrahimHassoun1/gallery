@@ -6,7 +6,7 @@ const AddImage = () => {
 
     const { setAddPopup,url,id}=useContext(MyContext)
     const [image, setImage] = useState(null)
-    
+    const [feedback,setFeedback] = useState(null)
     const [data,setData] = useState({
         title:"",
         description:"",
@@ -49,11 +49,17 @@ const AddImage = () => {
             image
         }
         console.log(image)
+        try{
+            const response = await axios.post(url+"/image/createImage.php", apiData, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            console.log(response);
+            setFeedback(response.data.message)
+        }catch(error){
+            console.log(error)
+            setFeedback("image was not added")
+        }
         
-        const response = await axios.post(url+"/image/createImage.php", apiData, {
-            headers: { 'Content-Type': 'application/json' }
-        });
-        console.log(response);
     }
   return (
     <div className='add-image' >
@@ -84,11 +90,12 @@ const AddImage = () => {
                 <input type="text" placeholder="Title" name="title" required  onChange={(e)=>handleChange(e)}/>
                 <textarea placeholder="Description" name="description" required onChange={(e)=>handleChange(e)}></textarea>
                 <button type="submit" onClick={(e)=>addImage(e)}>Submit</button>
+                {feedback!=null?<p>{feedback}</p>:""}
             </form>
         </div>
     
     </div>
-  )
+)
 }
 
 export default AddImage
