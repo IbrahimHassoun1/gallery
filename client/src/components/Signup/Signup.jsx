@@ -33,9 +33,9 @@ const Signup = () => {
     <div className="login-form">
       <h1>Register</h1>
       <form onSubmit={(e)=>handleRegister(e)}>
-          <input type="text" placeholder="name" name='name'/>
-          <input type="email" placeholder="Email" name='email'/>
-          <input type="password" placeholder="Password" name='password'/>
+          <input type="text" placeholder="name" name='name'required/>
+          <input type="email" placeholder="Email" name='email'required/>
+          <input type="password" placeholder="Password" name='password'required/>
           <button className="login-btn">Register</button>
       </form>
       <p className="login-register-btn">Already have an account? <span onClick={()=>{setRegistered(true)}}>Login</span></p>

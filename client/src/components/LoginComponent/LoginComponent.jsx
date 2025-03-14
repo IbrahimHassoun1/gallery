@@ -35,8 +35,8 @@ const LoginComponent = () => {
         <h1>Login</h1>
         <form onSubmit={(e)=>handleLogin(e)}>
             
-            <input type="email" placeholder="Email" name='email'/>
-            <input type="password" placeholder="Password" name='password'/>
+            <input type="email" placeholder="Email" name='email' required/>
+            <input type="password" placeholder="Password" name='password' required/>
             <button className="login-btn">Login</button>
         </form>
         <p className="login-register-btn">Don't have an account? <span onClick={()=>{setRegistered(false)}}>Register</span></p>

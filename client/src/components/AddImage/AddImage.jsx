@@ -4,7 +4,7 @@ import "./AddImage.css"
 import { MyContext } from '../../Context/Context'
 const AddImage = () => {
 
-    const { setAddPopup,url,id}=useContext(MyContext)
+    const { setAddPopup,url,id,setId}=useContext(MyContext)
     const [image, setImage] = useState(null)
     const [feedback,setFeedback] = useState(null)
     const [data,setData] = useState({
@@ -55,6 +55,9 @@ const AddImage = () => {
             });
             console.log(response);
             setFeedback(response.data.message)
+            setId(id+1)
+            setId(id-1)
+
         }catch(error){
             console.log(error)
             setFeedback("image was not added")
@@ -67,7 +70,7 @@ const AddImage = () => {
             
         </div>
         <div className="table">
-            <form action="">
+            <form onSubmit={(e)=>addImage(e)}>
                 <input  
                     type="file" 
                     accept="image/*" 
@@ -87,9 +90,9 @@ const AddImage = () => {
                     
                 />
                 <img id="image-preview" alt="Image Preview" style={{ display: 'block', marginTop: '10px', maxWidth: '100%' }} />
-                <input type="text" placeholder="Title" name="title" required  onChange={(e)=>handleChange(e)}/>
-                <textarea placeholder="Description" name="description" required onChange={(e)=>handleChange(e)}></textarea>
-                <button type="submit" onClick={(e)=>addImage(e)}>Submit</button>
+                <input type="text" placeholder="Title" name="title"   onChange={(e)=>handleChange(e)} required/>
+                <textarea placeholder="Description" name="description"  onChange={(e)=>handleChange(e)} required></textarea>
+                <button type="submit" >Submit</button>
                 {feedback!=null?<p>{feedback}</p>:""}
             </form>
         </div>
