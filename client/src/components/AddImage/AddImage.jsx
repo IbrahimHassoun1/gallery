@@ -55,8 +55,7 @@ const AddImage = () => {
             });
             console.log(response);
             setFeedback(response.data.message)
-            setId(id+1)
-            setId(id-1)
+            
 
         }catch(error){
             console.log(error)

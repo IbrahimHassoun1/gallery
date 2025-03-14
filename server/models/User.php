@@ -29,7 +29,13 @@ class User extends User_Skeleton
         $password = password_hash($password, PASSWORD_BCRYPT);
         $name = $this->getName();
         $email = $this->getEmail();
-
+        $sql = "SELECT * FROM users WHERE email = '$email'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            echo json_encode(array("message" => "Email already exists"));
+            http_response_code(400);
+            return;
+        }
 
         $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')";
         $result = $conn->query($sql);

@@ -43,7 +43,7 @@ const Gallery = () => {
         <div className="table">
           {id!=null?
           images.map(element=>{
-            return <ImageCard src={element.base64} title={element.title} description={element.description} key={element.id}/>
+            return <ImageCard src={element.base64} title={element.title} description={element.description} key={element.id} image_id={element.id}/>
           })
           :<h1>Login to access images</h1>}
         

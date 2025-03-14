@@ -1,10 +1,12 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { MyContext } from '../../Context/Context'
 import { useNavigate } from 'react-router'
 
 const Signup = () => {
     const {url,setRegistered ,setToken,test,setId} =   useContext(MyContext)
+    const [feedback,setFeedback]=useState("")
+
     const navigate = useNavigate()
     useEffect(() => {console.log(test)}, [test])
 
@@ -17,6 +19,9 @@ const Signup = () => {
         try{
           const response=await axios.post(url+"/user/register.php",data,{headers:{'Content-Type':'application/json'}})
           
+          if(response.status!=200){
+            setFeedback("Error")
+          }
           if (response.data.token !=null){
             localStorage.setItem('token',response.data.token)
             localStorage.setItem("id",response.data.id)
@@ -25,7 +30,10 @@ const Signup = () => {
             navigate("/")
           }
         }catch(error){
+          
           console.log(error)
+          setFeedback(error.response.data.message)
+          
         }
       }
 
@@ -39,6 +47,7 @@ const Signup = () => {
           <button className="login-btn">Register</button>
       </form>
       <p className="login-register-btn">Already have an account? <span onClick={()=>{setRegistered(true)}}>Login</span></p>
+      <h1>{feedback!=null?feedback:""}</h1>
   </div>
   )
 }
