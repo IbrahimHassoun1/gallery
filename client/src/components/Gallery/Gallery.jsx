@@ -24,6 +24,7 @@ const Gallery = () => {
     })
     if(!response.error){
       setImages(response.data)
+      console.log(response.data)
     }
   }
 
@@ -46,7 +47,7 @@ const Gallery = () => {
         <div className="table">
           {images.length>0?
           images.map((element,index)=>{
-            return <FadeInOut direction='in'><ImageCard src={element.base64} title={element.title} description={element.description} key={element.id} image_id={element.id} index={index}/></FadeInOut>
+            return <FadeInOut direction='in' key={element.id}><ImageCard src={element.base64} title={element.title} description={element.description} key={element.id} image_id={element.id} index={index}/></FadeInOut>
           })
           :id!=null?
           <h1>You still have no images,upload some!</h1>
