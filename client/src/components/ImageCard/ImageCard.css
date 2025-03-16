@@ -1,19 +1,8 @@
 .image-card{
     position: relative;
-    width: 30%;
+    width: 100%;
 }
-@media (max-width: 1045px){
-    .image-card{
-        width: 45%;
-    }
-    
-}
-@media (max-width: 768px){
-    .image-card{
-        width: 100%;
-    }
-    
-}
+
 .image-card img{
     width: 100%;
     height: 50vh;

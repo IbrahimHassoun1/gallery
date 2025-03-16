@@ -5,6 +5,7 @@ import './login.css'
 import LoginComponent from '../../components/LoginComponent/LoginComponent.jsx'
 import Signup from '../../components/Signup/Signup.jsx'
 import { MyContext } from '../../Context/Context.jsx'
+import FadeInOut from '../../Effects/FadeInOut.jsx'
 
 const Login = () => {
   const {registered} = useContext(MyContext)
@@ -19,8 +20,9 @@ const Login = () => {
     <div className='login'>
         
         {registered?
-        <LoginComponent/>:
-          <Signup/>
+
+        <FadeInOut direction='in'><LoginComponent/></FadeInOut>:
+        <FadeInOut direction='in'><Signup/></FadeInOut>
       }
         
     </div>

@@ -1,24 +1,28 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import './ImageCard.css'
 import axios from 'axios'
 import { MyContext } from '../../Context/Context'
 
-const ImageCard = ({image_id,src,title,description}) => {
-    const {url} = useContext(MyContext)
+const ImageCard = ({image_id,src,title,description,index}) => {
+    const {url,images,setImages} = useContext(MyContext)
     const deleteImage= async (element_id)=>{
         try{
             const response = await axios.post(url+"/image/deleteImage.php" ,{"id":element_id},{
                 headers: { 'Content-Type': 'application/json' }
             });
             
-            console.log(response);
             
+            setImages(images => images.filter((_, i) => i !== index));
+
             
         }catch(error){
             console.log(error)
             
         }
     }
+    useEffect(()=>{
+        console.log("new images: "+images)
+    },[images])
   return (
     
         <div className="image-card">
@@ -30,7 +34,7 @@ const ImageCard = ({image_id,src,title,description}) => {
                     <p>{description}</p>
                 </div>
                 <div className='buttons'>
-                    <button className='delete-button' onClick={deleteImage(image_id)}>Delete</button>
+                    <button className='delete-button' onClick={()=>deleteImage(image_id)}>Delete</button>
                     <button>Edit</button>
                 </div>
             </div>

@@ -4,9 +4,10 @@ import "./AddImage.css"
 import { MyContext } from '../../Context/Context'
 const AddImage = () => {
 
-    const { setAddPopup,url,id,setId}=useContext(MyContext)
+    const { setAddPopup,url,id,setId,setGlobalFeedback}=useContext(MyContext)
     const [image, setImage] = useState(null)
     const [feedback,setFeedback] = useState(null)
+    const [add,setAdd] = useState(false)
     const [data,setData] = useState({
         title:"",
         description:"",
@@ -56,7 +57,7 @@ const AddImage = () => {
             console.log(response);
             setFeedback(response.data.message)
             
-
+            
         }catch(error){
             console.log(error)
             setFeedback("image was not added")
