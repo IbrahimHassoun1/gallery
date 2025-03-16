@@ -41,7 +41,7 @@ const Gallery = () => {
       {addPopup?<AddImage/>:""}
     <div className='container gallery'>
         
-        <h1>Photos</h1>
+        <h1 id='photos'>Photos</h1>
         <hr />
         <div className="table">
           {images.length>0?
