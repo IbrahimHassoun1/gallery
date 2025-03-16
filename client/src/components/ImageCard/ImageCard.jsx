@@ -1,14 +1,25 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext ,useEffect,useState} from 'react'
 import './ImageCard.css'
-import axios from 'axios'
+
 import { MyContext } from '../../Context/Context'
 import { request } from '../../utils/remote/axios'
 import { requestMethods } from '../../utils/enum/request.methods'
 
 const ImageCard = ({image_id,src,title,description,index}) => {
-
-    const {url,images,setImages} = useContext(MyContext)
-
+    const {setImages} = useContext(MyContext)
+    const [data,setData] = useState({
+        title:title,
+        description:description
+        })
+    const [feedBack,setFeedBack] = useState("")
+    const handleChange = (e) =>{
+        setData(
+            {
+                ...data,
+                [e.target.name]:e.target.value
+            }
+        )
+    }
     const deleteImage= async (element_id)=>{
 
         const response = await request({
@@ -22,8 +33,18 @@ const ImageCard = ({image_id,src,title,description,index}) => {
         }
         
     }
-
-
+    const updateImage = async(element_id)=>{
+        const response = await request({
+            method:requestMethods.POST,
+            route:"/image/updateImage.php",
+            body:{"id":element_id,...data}
+        })
+        setFeedBack(response.message)
+    }
+    
+useEffect(()=>{
+console.log(data)
+},[data])
 
   return (
     
@@ -32,13 +53,14 @@ const ImageCard = ({image_id,src,title,description,index}) => {
             <div className="image-card-content">
                 
                 <div className='info'>
-                    <h3>{title}</h3>
-                    <p>{description}</p>
+                    <input type="text"  value={data.title} onChange={(e)=>handleChange(e)} name='title'/>
+                    <textarea onChange={(e)=>handleChange(e)} name='description' value={data.description}></textarea>
                 </div>
                 <div className='buttons'>
-                    <button className='delete-button' onClick={()=>deleteImage(image_id)}>Delete</button>
-                    <button>Edit</button>
+                    <button className='delete-button' onClick={()=>deleteImage(image_id)} >Delete</button>
+                    <button onClick={()=>updateImage(image_id)}>Edit</button>
                 </div>
+                <h3>{feedBack}</h3>
             </div>
         </div>
 

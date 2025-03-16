@@ -5,9 +5,9 @@ header("Access-Control-Allow-Origin: *");
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $data = json_decode(file_get_contents("php://input"), true);
-    if (!isset($data['title'])) {
+    if (!isset($data['id'])) {
         http_response_code(400);
-        echo json_encode(["message" => "Missing image title."]);
+        echo json_encode(["message" => "Missing image id."]);
         return;
     }
     if (isset($data['id']) && isset($data['title']) && isset($data['description'])) {
