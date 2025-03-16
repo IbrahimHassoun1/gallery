@@ -2,27 +2,29 @@ import React, { useContext, useEffect } from 'react'
 import './ImageCard.css'
 import axios from 'axios'
 import { MyContext } from '../../Context/Context'
+import { request } from '../../utils/remote/axios'
+import { requestMethods } from '../../utils/enum/request.methods'
 
 const ImageCard = ({image_id,src,title,description,index}) => {
-    const {url,images,setImages} = useContext(MyContext)
-    const deleteImage= async (element_id)=>{
-        try{
-            const response = await axios.post(url+"/image/deleteImage.php" ,{"id":element_id},{
-                headers: { 'Content-Type': 'application/json' }
-            });
-            
-            
-            setImages(images => images.filter((_, i) => i !== index));
 
-            
-        }catch(error){
-            console.log(error)
-            
+    const {url,images,setImages} = useContext(MyContext)
+
+    const deleteImage= async (element_id)=>{
+
+        const response = await request({
+            method:requestMethods.POST,
+            route:"/image/deleteImage.php",
+            body:{"id":element_id}
+        })
+
+        if(!response.error){
+            setImages(images => images.filter((_, i) => i !== index));
         }
+        
     }
-    useEffect(()=>{
-        console.log("new images: "+images)
-    },[images])
+
+
+
   return (
     
         <div className="image-card">
