@@ -1,29 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import './FadeInOut.css'; 
+import { useEffect, useState, useRef } from "react";
+import "./styles.css"
+//effect made with gpt4
+const FadeInOut = ({ direction = "in", children }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
 
-const FadeInOut = ({ in: inProp, children }) => {
-    const [visible, setVisible] = useState(inProp);
-
-    useEffect(() => {
-        if (inProp) {
-            setVisible(true);
-        } else {
-            const timeout = setTimeout(() => setVisible(false), 300); // Match this duration with your CSS transition
-            return () => clearTimeout(timeout);
-        }
-    }, [inProp]);
-
-    return (
-        <div className={`fade ${inProp ? 'in' : 'out'}`} style={{ display: visible ? 'block' : 'none' }}>
-            {children}
-        </div>
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 }
     );
-};
 
-FadeInOut.propTypes = {
-    in: PropTypes.bool.isRequired,
-    children: PropTypes.node.isRequired,
+    if (ref.current) observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+    ref={ref}
+    className="fade-card"
+    style={{opacity: isVisible ? (direction === "in" ? 1 : 0) : direction === "in" ? 0 : 1,
+    transition: "opacity 2s ease-in-out",
+    
+    }}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default FadeInOut;

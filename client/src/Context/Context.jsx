@@ -13,6 +13,9 @@ const ContextProvider = ({children}) =>{
     useEffect(()=>{
         if(localStorage.getItem("id")!=null) setId(localStorage.getItem("id"));
     },[])
+    useEffect(()=>{
+        
+    },[id])
     const value={
         url,
         registered,setRegistered,
