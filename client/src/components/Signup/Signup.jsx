@@ -1,49 +1,65 @@
-import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useContext, useState } from 'react'
 import { MyContext } from '../../Context/Context'
 import { useNavigate } from 'react-router'
+import { request } from '../../utils/remote/axios'
+import { requestMethods } from '../../utils/enum/request.methods'
 
 const Signup = () => {
-    const {url,setRegistered ,setToken,test,setId} =   useContext(MyContext)
-    const [feedback,setFeedback]=useState("")
 
+    const {setRegistered ,setToken,setId} =   useContext(MyContext)
+    const [feedback,setFeedback]=useState("")
+    const [data,setData] = useState({
+          email:"",
+          password:"",
+          name:""
+        })
+    const handleChange = (e) =>{
+          setData(
+              {
+                  ...data,
+                  [e.target.name]:e.target.value
+              }
+          )
+      }
     const navigate = useNavigate()
-    useEffect(() => {console.log(test)}, [test])
+    
 
     const handleRegister = async (e) => {
         e.preventDefault()
-        const formData = new FormData(e.target)
-        const data = Object.fromEntries(formData.entries())
-        
     
-        try{
-          const response=await axios.post(url+"/user/register.php",data,{headers:{'Content-Type':'application/json'}})
-          
+        const response = await request({
+          method:requestMethods.POST,
+          route:"/user/register.php",
+          body:data
+        })
+        
+        if(response.error){
+          console.log(response)
+          setFeedback(response.message)
+        }else{
           if(response.status!=200){
             setFeedback("Error")
           }
-          if (response.data.token !=null){
-            localStorage.setItem('token',response.data.token)
-            localStorage.setItem("id",response.data.id)
-            setToken(response.data.token)
-            setId(response.data.id)
+          if (response.token !=null){
+            localStorage.setItem('token',response.token)
+            localStorage.setItem("id",response.id)
+            setToken(response.token)
+            setId(response.id)
             navigate("/")
           }
-        }catch(error){
-          
-          console.log(error)
-          setFeedback(error.response.data.message)
-          
         }
+
+
+      
       }
 
   return (
     <div className="login-form">
       <h1>Register</h1>
       <form onSubmit={(e)=>handleRegister(e)}>
-          <input type="text" placeholder="name" name='name'required/>
-          <input type="email" placeholder="Email" name='email'required/>
-          <input type="password" placeholder="Password" name='password'required/>
+          <input type="text" placeholder="name" name='name' onChange={(e)=>handleChange(e)} required/>
+          <input type="email" placeholder="Email" name='email' onChange={(e)=>handleChange(e)} required/>
+          <input type="password" placeholder="Password" name='password' onChange={(e)=>handleChange(e)} required/>
           <button className="login-btn">Register</button>
       </form>
       <p className="login-register-btn">Already have an account? <span onClick={()=>{setRegistered(true)}}>Login</span></p>

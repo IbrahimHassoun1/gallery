@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from 'react'
 import './Gallery.css'
 import ImageCard from '../ImageCard/ImageCard'
@@ -5,6 +6,8 @@ import AddImage from '../AddImage/AddImage'
 import { MyContext } from '../../Context/Context'
 import axios from 'axios'
 import FadeInOut from '../../Effects/FadeInOut'
+import { request } from '../../utils/remote/axios'
+import { requestMethods } from '../../utils/enum/request.methods'
 
 
 
@@ -14,16 +17,14 @@ const Gallery = () => {
 
 
   const getAllImages = async ()=>{
-    try{
-      const response = await axios.post(url+"/image/readAllImages.php" ,{"owner_id":localStorage.getItem("id")},{
-          headers: { 'Content-Type': 'application/json' }
-      });
-      console.log(response);
-      setImages(response.data.data)
-  }catch(error){
-      console.log(error)
-      
-  }
+    const response = await request({
+      method:requestMethods.POST,
+      route:"/image/readAllImages.php",
+      body:{"owner_id":localStorage.getItem("id")}
+    })
+    if(!response.error){
+      setImages(response.data)
+    }
   }
 
 

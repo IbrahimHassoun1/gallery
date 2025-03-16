@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, {  useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import "./AddImage.css"
 import { MyContext } from '../../Context/Context'
+import { request } from '../../utils/remote/axios'
+import { requestMethods } from '../../utils/enum/request.methods'
 const AddImage = () => {
 
     const { setAddPopup,url,id,setId,setGlobalFeedback}=useContext(MyContext)
@@ -50,17 +53,15 @@ const AddImage = () => {
             image
         }
         console.log(image)
-        try{
-            const response = await axios.post(url+"/image/createImage.php", apiData, {
-                headers: { 'Content-Type': 'application/json' }
-            });
-            console.log(response);
-            setFeedback(response.data.message)
-            
-            
-        }catch(error){
-            console.log(error)
-            setFeedback("image was not added")
+        const response = await request({
+            method:requestMethods.POST,
+            body:apiData,
+            route:"/image/createImage.php"
+        })
+        if(response.error){
+            setFeedback(response.message)
+        }else{
+            setFeedback("Image uploaded successfully")
         }
         
     }
